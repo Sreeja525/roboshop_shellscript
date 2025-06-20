@@ -9,6 +9,9 @@ DOMAIN_NAME="sreeja.site"
 for instance in ${INSTANCES[@]}
 do
     instance_id=$(aws ec2 run-instances --image-id ami-09c813fb71547fc4f --instance-type t2.micro --security-group-ids sg-0672a218cab9ebbb0 --subnet-id subnet-00af09fb15e458af9 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" --query "Instances[0].InstanceId" --output text)
+    
+    echo "Waiting for $instance to enter running state..."
+    aws ec2 wait instance-running --instance-ids "$instance_id"
 
     if [ $instance != "frontend" ]
     then 
