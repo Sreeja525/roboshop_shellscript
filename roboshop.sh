@@ -2,7 +2,7 @@
 
 AMI_ID="ami-09c813fb71547fc4f"
 SG_ID="sg-0672a218cab9ebbb0"
-INSTANCES=("mongodb" "catalogue" "user" "cart" "shipping" "dispatch" "redis" "mysql" "rabbitmq" "payment" "frontend")
+INSTANCES=("mongodb" "catalogue" "frontend")
 ZONE_ID="Z02370613NFA2YD1CKRZ2"
 DOMAIN_NAME="sreeja.site"
 
