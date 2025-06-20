@@ -33,10 +33,10 @@ aws route53 change-resource-record-sets --hosted-zone-id $ZONE_ID --change-batch
       "ResourceRecordSet": {
         "Name": "$RECORD_NAME",
         "Type": "A",
-        "TTL": 300,
+        "TTL": 1,
         "ResourceRecords": [
           {
-            "Value": "192.0.2.1"
+            "Value": "$IP"
           }
         ]
       }
