@@ -1,10 +1,12 @@
 #!/bin/bash
 
+
 AMI_ID="ami-09c813fb71547fc4f"
 SG_ID="sg-0672a218cab9ebbb0"
 INSTANCES=("mongodb" "catalogue" "frontend")
 ZONE_ID="Z02370613NFA2YD1CKRZ2"
 DOMAIN_NAME="sreeja.site"
+SUBNET_ID="$subnet-00af09fb15e458af9"
 
 for instance in ${INSTANCES[@]}
 do
@@ -23,29 +25,23 @@ do
     fi
     echo "$instance ip address is: $IP"
 
-
-    aws route53 change-resource-record-sets --hosted-zone-id $ZONE_ID --change-batch 
+    aws route53 change-resource-record-sets \
+    --hosted-zone-id $ZONE_ID \
+    --change-batch '
     {
-    "Comment": "Update A record",
-    "Changes": 
-        [
-            {
-                "Action": "UPSERT",
-                "ResourceRecordSet": 
-                {
-                    "Name": "$RECORD_NAME",
-                    "Type": "A",
-                    "TTL": 1,
-                    "ResourceRecords": 
-                    [
-                    {
-                        "Value": "$IP"
-                    }
-                    ]
-                }
-            }
-        ]
-    }
+        "Comment": "Creating or Updating a record set for cognito endpoint"
+        ,"Changes": [{
+        "Action"              : "UPSERT"
+        ,"ResourceRecordSet"  : {
+            "Name"              : "'$RECORD_NAME'"
+            ,"Type"             : "A"
+            ,"TTL"              : 1
+            ,"ResourceRecords"  : [{
+                "Value"         : "'$IP'"
+            }]
+        }
+        }]
+    }'
 
 
 done
