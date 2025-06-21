@@ -38,7 +38,7 @@ VALIDATE $? "Copying MongoDB repo"
 
 
 
-dnf install mongodb-org -y 
+dnf install mongodb-org -y
 VALIDATE $? "installing mongodb-org"
 
 systemctl enable mongod 
