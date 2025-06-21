@@ -28,7 +28,7 @@ VALIDATE(){
     then    
         echo -e "$G $2 is.... SUCCESS $N " | tee -a $LOG_FILE
     else
-        echo  -e " $R installing $2 is failure $N" | tee -a $LOG_FILE
+        echo  -e " $R  $2 is failure $N" | tee -a $LOG_FILE
         exit 1 #give other than 0 upto 127
     fi
 }
@@ -46,3 +46,10 @@ VALIDATE $? " enabling mongodb-org"
 
 systemctl start mongod
 VALIDATE $? "starting mongodb-org"
+
+
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
+VALIDATE $? "updating listen address"
+
+systemctl restart mongod
+VALIDATE $? "restarting mongodb"
