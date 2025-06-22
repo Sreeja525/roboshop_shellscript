@@ -57,6 +57,8 @@ VALIDATE $? "creating app directory"
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
 VALIDATE $? "Downloading catalogue"
 
+cp catalogue.service /etc/systemd/system/catalogue.service
+VALIDATE $? "copying catalogue service"
 
 cd /app
 rm -rf /app/*
@@ -67,8 +69,8 @@ VALIDATE $? "unzipping catalogue"
 npm install
 VALIDATE $? "downloading dependencies"
 
-cp catalogue.service /etc/systemd/system/catalogue.service
-VALIDATE $? "copying catalogue service"
+#cp catalogue.service /etc/systemd/system/catalogue.service
+#VALIDATE $? "copying catalogue service"
 
 systemctl daemon-reload
 
