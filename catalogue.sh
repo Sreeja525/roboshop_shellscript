@@ -43,7 +43,7 @@ dnf install nodejs -y
 VALIDATE $? " installing nodejs"
 
 id roboshop
-if [ $? -eq 0]
+if [ $? -eq 0 ]
 then
     echo "roboshop user is already exists"
 else
