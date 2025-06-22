@@ -1,6 +1,4 @@
 #!/bin/bash
-
-
 AMI_ID="ami-09c813fb71547fc4f"
 SG_ID="sg-0672a218cab9ebbb0"
 INSTANCES=("mongodb" "catalogue" "frontend")
