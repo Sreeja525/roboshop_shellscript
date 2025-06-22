@@ -9,6 +9,7 @@ N="\e[0m"
 LOGS_FOLDER=/var/log/shellscript-logs
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
+SCRIPT_DIR=$PWD
 echo "creating $LOGS_FOLDER"
 
 
@@ -56,8 +57,8 @@ VALIDATE $? "creating app directory"
 
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
 VALIDATE $? "Downloading catalogue"
-
-cp catalogue.service /etc/systemd/system/catalogue.service
+pwd
+cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
 VALIDATE $? "copying catalogue service"
 
 cd /app
@@ -81,7 +82,7 @@ systemctl start catalogue
 VALIDATE $? "starting catalogue"
 
 
-cp mongodb.repo /etc/yum.repos.d/mongo.repo
+cp $SCRIPT_DIR/mongodb.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? " copying mongo repo"
 
 dnf install mongodb-mongosh -y
