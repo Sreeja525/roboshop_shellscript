@@ -1,7 +1,7 @@
 #!/bin/bash
 AMI_ID="ami-09c813fb71547fc4f"
 SG_ID="sg-0672a218cab9ebbb0"
-INSTANCES=("mongodb" "catalogue" "frontend")
+INSTANCES=("mongodb" "catalogue" "frontend" "redis" "user" "cart" "shipping" "payment" "mysql" "dispatch" "rabbitmq")
 ZONE_ID="Z02370613NFA2YD1CKRZ2"
 DOMAIN_NAME="sreeja.site"
 SUBNET_ID="$subnet-00af09fb15e458af9"
