@@ -70,11 +70,11 @@ cp $SCRIPT_DIR/shippingg.service /etc/systemd/system/shipping.service &>>$LOG_FI
 systemctl daemon-reload &>>$LOG_FILE
 VALIDATE $? "Daemon Realod"
 
-systemctl enable shipping &>>$LOG_FILE
-VALIDATE $? "Enabling Shipping"
+systemctl enable shipping  &>>$LOG_FILE
+VALIDATE $? "Enabling shipping"
 
 systemctl start shipping  &>>$LOG_FILE
-VALIDATE $? "Starting Shipping"
+VALIDATE $? "Starting shipping"
 
 dnf install mysql -y  &>>$LOG_FILE
 VALIDATE $? "Install MySQL"
