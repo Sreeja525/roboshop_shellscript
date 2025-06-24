@@ -25,6 +25,8 @@ else
     echo -e "$G you are running with root access $N" | tee -a $LOG_FILE
 fi
 
+echo "Please enter root password to setup"
+read -s MYSQL_ROOT_PASSWORD
 VALIDATE(){
     if [ $1 -eq 0 ]
     then    
@@ -41,8 +43,7 @@ dnf install mysql-server -y &>>$LOG_FILE
 systemctl enable mysqld
 systemctl start mysqld  
 
-echo "Please enter root password to setup"
-read -s MYSQL_ROOT_PASSWORD
+
 
 mysql_secure_installation --set-root-pass read -p $MYSQL_ROOT_PASSWORD
 
