@@ -36,7 +36,7 @@ VALIDATE(){
 }
 
 
-dnf install maven -y &>>$LOG_FILE
+dnf install maven -y & >> $LOG_FILE
 VALIDATE $? "installing maven"
 
 id roboshop
@@ -51,43 +51,43 @@ fi
 mkdir -p /app
 VALIDATE $? "creating app directory"
 
-curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip &>>$LOG_FILE
+curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip & >> $LOG_FILE
 VALIDATE $? "Downloading shipping"
 
-rm -rf /app/* &>>$LOG_FILE
+rm -rf /app/* & >> $LOG_FILE
 cd /app 
-unzip /tmp/shipping.zip &>>$LOG_FILE
+unzip /tmp/shipping.zip & >> $LOG_FILE
 VALIDATE $? "unzipping shipping"
 
-mvn clean package &>>$LOG_FILE
+mvn clean package & >> $LOG_FILE
 VALIDATE $? "Packaging the shipping application"
 
 mv target/shipping-1.0.jar shipping.jar &>>$LOG_FILE
 VALIDATE $? "Moving and renaming Jar file"
 
-cp $SCRIPT_DIR/shippingg.service /etc/systemd/system/shipping.service &>>$LOG_FILE
+cp $SCRIPT_DIR/shippingg.service /etc/systemd/system/shipping.service & >> $LOG_FILE
 
-systemctl daemon-reload &>>$LOG_FILE
+systemctl daemon-reload & >> $LOG_FILE
 VALIDATE $? "Daemon Realod"
 
-systemctl enable shipping  &>>$LOG_FILE
+systemctl enable shipping  & >> $LOG_FILE
 VALIDATE $? "Enabling shipping"
 
-systemctl start shipping  &>>$LOG_FILE
+systemctl start shipping  & >> $LOG_FILE
 VALIDATE $? "Starting shipping"
 
-dnf install mysql -y  &>>$LOG_FILE
+dnf install mysql -y  & >> $LOG_FILE
 VALIDATE $? "Install MySQL"
 
 echo "Please enter root password to setup"
 read -s MYSQL_ROOT_PASSWORD
 
-mysql -h mysql.daws84s.site -u root -p$MYSQL_ROOT_PASSWORD -e 'use cities' &>>$LOG_FILE
+mysql -h mysql.daws84s.site -u root -p$MYSQL_ROOT_PASSWORD -e 'use cities' & >> $LOG_FILE
 if [ $? -ne 0 ]
 then
-    mysql -h mysql.daws84s.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/schema.sql &>>$LOG_FILE
-    mysql -h mysql.daws84s.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/app-user.sql  &>>$LOG_FILE
-    mysql -h mysql.daws84s.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/master-data.sql &>>$LOG_FILE
+    mysql -h mysql.daws84s.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/schema.sql & >> $LOG_FILE
+    mysql -h mysql.daws84s.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/app-user.sql  & >> $LOG_FILE
+    mysql -h mysql.daws84s.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/master-data.sql & >> $LOG_FILE
     VALIDATE $? "Loading data into MySQL"
 else
     echo -e "Data is already loaded into MySQL ... $Y SKIPPING $N"
