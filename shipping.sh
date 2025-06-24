@@ -34,7 +34,8 @@ VALIDATE(){
         exit 1 #give other than 0 upto 127
     fi
 }
-
+echo "Please enter root password to setup"
+read -s MYSQL_ROOT_PASSWORD
 
 dnf install maven -y & >> $LOG_FILE
 VALIDATE $? "installing maven"
@@ -79,10 +80,10 @@ VALIDATE $? "Starting shipping"
 dnf install mysql -y  & >> $LOG_FILE
 VALIDATE $? "Install MySQL"
 
-echo "Please enter root password to setup"
-read -s MYSQL_ROOT_PASSWORD
+#echo "Please enter root password to setup"
+#read -s MYSQL_ROOT_PASSWORD
 
-mysql -h mysql.daws84s.site -u root -p$MYSQL_ROOT_PASSWORD -e 'use cities' & >> $LOG_FILE
+mysql -h mysql.sreeja.site -u root -p$MYSQL_ROOT_PASSWORD -e 'use cities' & >> $LOG_FILE
 if [ $? -ne 0 ]
 then
     mysql -h mysql.daws84s.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/schema.sql & >> $LOG_FILE
