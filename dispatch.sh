@@ -1,6 +1,5 @@
 #!/bin/bash
 
-START_TIME= $(date +%s)
 USERID=$( id -u )
 R="\e[31m"
 G="\e[32m"
@@ -10,6 +9,7 @@ N="\e[0m"
 LOGS_FOLDER=/var/log/shellscript-logs
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
+SCRIPT_DIR=$PWD
 echo "creating $LOGS_FOLDER"
 
 
@@ -34,28 +34,31 @@ VALIDATE(){
     fi
 }
 
-cp mongodb.repo /etc/yum.repos.d/mongo.repo
-VALIDATE $? "Copying MongoDB repo"
+dnf install golang -y
+
+id roboshop
+if [ $? -eq 0 ]
+then
+    echo "roboshop user is already exists"
+else
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+    VALIDATE $? "creating system user"
+fi
+
+mkdir -p /app
+
+curl -L -o /tmp/dispatch.zip https://roboshop-artifacts.s3.amazonaws.com/dispatch-v3.zip 
+cd /app 
+unzip /tmp/dispatch.zip
+
+go mod init dispatch
+go get 
+go build
+
+cp $SCRIPT_DIR/dispatch.service /etc/systemd/system/dispatch.service
 
 
+systemctl daemon-reload
 
-dnf install mongodb-org -y &>>$LOG_FILE
-VALIDATE $? "Installing mongodb server"
-
-systemctl enable mongod  &>>$LOG_FILE
-VALIDATE $? " enabling mongodb-org"
-
-systemctl start mongod
-VALIDATE $? "starting mongodb-org"
-
-
-sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
-VALIDATE $? "updating listen address"
-
-systemctl restart mongod 
-VALIDATE $? "restarting mongodb"
-
-END_TIME= $(date +%s)
-TOTAL_TIME=$(( $END_TIME - $START_TIME ))
-
-echo -e "Script exection completed successfully, $Y time taken: $TOTAL_TIME seconds $N" | tee -a $LOG_FILE
+systemctl enable dispatch 
+systemctl start dispatch

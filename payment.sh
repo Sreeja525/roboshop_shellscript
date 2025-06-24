@@ -10,6 +10,7 @@ N="\e[0m"
 LOGS_FOLDER=/var/log/shellscript-logs
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
+SCRIPT_DIR=$PWD
 echo "creating $LOGS_FOLDER"
 
 
@@ -34,26 +35,41 @@ VALIDATE(){
     fi
 }
 
-cp mongodb.repo /etc/yum.repos.d/mongo.repo
-VALIDATE $? "Copying MongoDB repo"
 
 
+dnf install python3 gcc python3-devel -y &>>$LOG_FILE
+VALIDATE $? "installing python"
 
-dnf install mongodb-org -y &>>$LOG_FILE
-VALIDATE $? "Installing mongodb server"
+id roboshop
+if [ $? -eq 0 ]
+then
+    echo "roboshop user is already exists"
+else
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+    VALIDATE $? "creating system user"
+fi
 
-systemctl enable mongod  &>>$LOG_FILE
-VALIDATE $? " enabling mongodb-org"
+mkdir -p /app 
 
-systemctl start mongod
-VALIDATE $? "starting mongodb-org"
+curl -L -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip &>>$LOG_FILE
+VALIDATE $? "downloading payment"
+cd /app 
+unzip /tmp/payment.zip &>>$LOG_FILE
+VALIDATE $? "unzipping payment"
 
 
-sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
-VALIDATE $? "updating listen address"
+pip3 install -r requirements.txt &>>$LOG_FILE
+VALIDATE $? "installing dependencies"
 
-systemctl restart mongod 
-VALIDATE $? "restarting mongodb"
+cp $SCRIPT_DIR/payment.service /etc/systemd/system/payment.service
+
+systemctl daemon-reload
+
+
+systemctl enable payment 
+
+systemctl start payment
+VALIDATE $? "starting payment"
 
 END_TIME= $(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
