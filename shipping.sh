@@ -62,7 +62,7 @@ VALIDATE $? "unzipping shipping"
 mvn clean package & >> $LOG_FILE
 VALIDATE $? "Packaging the shipping application"
 
-mv target/shipping-1.0.jar shipping.jar &>>$LOG_FILE
+mv target/shipping-1.0.jar shipping.jar & >> $LOG_FILE
 VALIDATE $? "Moving and renaming Jar file"
 
 cp $SCRIPT_DIR/shippingg.service /etc/systemd/system/shipping.service & >> $LOG_FILE
