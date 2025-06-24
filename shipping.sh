@@ -57,15 +57,16 @@ VALIDATE $? "Downloading shipping"
 
 rm -rf /app/* & >> $LOG_FILE
 cd /app 
+pwd
 unzip /tmp/shipping.zip & >> $LOG_FILE
 VALIDATE $? "unzipping shipping"
-
+pwd
 mvn clean package & >> $LOG_FILE
 VALIDATE $? "Packaging the shipping application"
 pwd
 mv target/shipping-1.0.jar shipping.jar & >> $LOG_FILE
 VALIDATE $? "Moving and renaming Jar file"
-
+pwd
 cp $SCRIPT_DIR/shippingg.service /etc/systemd/system/shipping.service & >> $LOG_FILE
 
 systemctl daemon-reload & >> $LOG_FILE
@@ -82,7 +83,7 @@ VALIDATE $? "Install MySQL"
 
 #echo "Please enter root password to setup"
 #read -s MYSQL_ROOT_PASSWORD
-
+pwd
 mysql -h mysql.sreeja.site -u root -p$MYSQL_ROOT_PASSWORD -e 'use cities' & >> $LOG_FILE
 if [ $? -ne 0 ]
 then
