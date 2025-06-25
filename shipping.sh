@@ -85,7 +85,7 @@ VALIDATE $? "Install MySQL"
 #echo "Please enter root password to setup"
 #read -s MYSQL_ROOT_PASSWORD
 pwd
-mysql -h mysql.sreeja.site -u root -pRoboShop@1 -e use cities
+mysql -h mysql.sreeja.site -u root -pRoboShop@1 -e 'use cities'
 if [ $? -ne 0 ]
 then
     mysql -h mysql.sreeja.site -uroot -pRoboShop@1 < /app/db/schema.sql 
