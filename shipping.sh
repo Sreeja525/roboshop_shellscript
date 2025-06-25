@@ -34,8 +34,8 @@ VALIDATE(){
         exit 1 #give other than 0 upto 127
     fi
 }
-echo "Please enter root password to setup"
-read -s MYSQL_ROOT_PASSWORD
+#echo "Please enter root password to setup"
+#read -s MYSQL_ROOT_PASSWORD
 
 dnf install maven -y
 VALIDATE $? "installing maven"
@@ -85,12 +85,12 @@ VALIDATE $? "Install MySQL"
 #echo "Please enter root password to setup"
 #read -s MYSQL_ROOT_PASSWORD
 pwd
-mysql -h mysql.sreeja.site -u root -p$MYSQL_ROOT_PASSWORD -e 'use cities'
+mysql -h mysql.sreeja.site -u root -pRoboShop@1 -e 'use cities'
 if [ $? -ne 0 ]
 then
-    mysql -h mysql.sreeja.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/schema.sql 
-    mysql -h mysql.sreeja.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/app-user.sql 
-    mysql -h mysql.sreeja.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/master-data.sql
+    mysql -h mysql.sreeja.site -uroot -pRoboShop@1 < /app/db/schema.sql 
+    mysql -h mysql.sreeja.site -uroot -pRoboShop@1 < /app/db/app-user.sql 
+    mysql -h mysql.sreeja.site -uroot -pRoboShop@1 < /app/db/master-data.sql
     VALIDATE $? "Loading data into MySQL"
 else
     echo -e "Data is already loaded into MySQL ... $Y SKIPPING $N"
