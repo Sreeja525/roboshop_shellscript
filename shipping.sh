@@ -68,7 +68,7 @@ pwd
 mv target/shipping-1.0.jar shipping.jar
 VALIDATE $? "Moving and renaming Jar file"
 pwd
-cp $SCRIPT_DIR/shippingg.service /etc/systemd/system/shipping.service 
+cp $SCRIPT_DIR/shipping.service /etc/systemd/system/shipping.service 
 
 systemctl daemon-reload 
 VALIDATE $? "Daemon Realod"
