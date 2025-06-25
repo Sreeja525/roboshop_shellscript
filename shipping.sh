@@ -15,7 +15,7 @@ echo "creating $LOGS_FOLDER"
 
 
 mkdir -p $LOGS_FOLDER # -p --> It creates parent directories as needed (e.g., if /var/log/myapp/logs doesn’t exist, it will create the full path).
-echo "script started executed at : $(date)" | tee -a 
+echo "script started executed at : $(date)"
 
 if [ $USERID -ne 0 ]
 then 
