@@ -88,9 +88,9 @@ pwd
 mysql -h mysql.sreeja.site -u root -p$MYSQL_ROOT_PASSWORD -e 'use cities'
 if [ $? -ne 0 ]
 then
-    mysql -h mysql.daws84s.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/schema.sql 
-    mysql -h mysql.daws84s.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/app-user.sql 
-    mysql -h mysql.daws84s.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/master-data.sql
+    mysql -h mysql.sreeja.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/schema.sql 
+    mysql -h mysql.sreeja.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/app-user.sql 
+    mysql -h mysql.sreeja.site -uroot -p$MYSQL_ROOT_PASSWORD < /app/db/master-data.sql
     VALIDATE $? "Loading data into MySQL"
 else
     echo -e "Data is already loaded into MySQL ... $Y SKIPPING $N"
